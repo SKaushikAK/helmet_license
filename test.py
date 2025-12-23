@@ -1,3 +1,11 @@
+import os
+
+os.environ["FLAGS_use_mkldnn"] = "0"
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
+import paddle
+paddle.set_flags({"FLAGS_use_mkldnn": False})
+
 import cv2
 import supervision as sv
 from ultralytics import YOLO
@@ -5,17 +13,19 @@ from paddleocr import PaddleOCR
 import typer
 import numpy as np
 import logging
-import pyresearch
+
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Initialize PaddleOCR
-ocr = PaddleOCR(use_angle_cls=True)
+ocr = PaddleOCR(use_textline_orientation=True, lang = 'en')
 
 # Load both models
-plate_model = YOLO("lprbest.pt")  # Model for license plate detection
-helmet_model = YOLO("best.pt")  # Model for helmet detection (With Helmet, Without Helmet)
+plate_model = YOLO("plate_last.pt")  # Model for license plate detection
+helmet_model = YOLO("helmet_last.pt")  # Model for helmet detection (With Helmet, Without Helmet)
+# plate_model.model.args.attention = False
+# helmet_model.model.args.attention = False
 
 app = typer.Typer()
 
@@ -72,7 +82,7 @@ def process_webcam(output_file="output.mp4"):
         return
 
     # Initialize supervision annotators for helmet detection
-    helmet_box_annotator = sv.BoundingBoxAnnotator()
+    helmet_box_annotator = sv.BoxAnnotator()
     helmet_label_annotator = sv.LabelAnnotator()
 
     frame_count = 0

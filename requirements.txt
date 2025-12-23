@@ -1,0 +1,26 @@
+numpy==1.26.4
+
+# -------------------------
+# Computer Vision
+# -------------------------
+opencv-python==4.6.0.66
+opencv-contrib-python==4.6.0.66
+
+# -------------------------
+# PyTorch (CPU – stable on Windows)
+# -------------------------
+torch==2.1.2
+torchvision==0.16.2
+torchaudio==2.1.2
+
+# pip install git+https://github.com/sunsmarterjie/yolov12.git 
+# -------------------------
+# YOLO + Visualization
+# -------------------------
+supervision
+
+# -------------------------
+# Paddle OCR stack (WINDOWS STABLE)
+# -------------------------
+paddlepaddle==2.6.2
+paddleocr==2.7.0.3
